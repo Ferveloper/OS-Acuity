@@ -14,16 +14,16 @@ var losDin = 0.0;          // Line-of-sight inches that extend beyond last whole
 
 
 // Functions to simplify cookies. (Source: https://www.quirksmode.org/js/cookies.html)
-function setCookie(name,value,days) {
+function setCookie(name, value, days) {
    'use strict';
 
    var expires = "";
    if (days) {
       var date = new Date();
-      date.setTime(date.getTime() + (days*24*60*60*1000));
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
       expires = "; expires=" + date.toUTCString();
-    }
-   document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+   }
+   document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
 
 function getCookie(name) {
@@ -31,10 +31,10 @@ function getCookie(name) {
 
    var nameEQ = name + "=";
    var ca = document.cookie.split(';');
-   for(var i=0;i < ca.length;i++) {
+   for (var i = 0; i < ca.length; i++) {
       var c = ca[i];
-      while (c.charAt(0)==' ') c = c.substring(1,c.length);
-      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+      while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
    }
    return null;
 }
@@ -42,7 +42,7 @@ function getCookie(name) {
 function eraseCookie(name) {
    'use strict';
 
-   document.cookie = name+'=; Max-Age=-99999999;';
+   document.cookie = name + '=; Max-Age=-99999999;';
 }
 
 
@@ -71,67 +71,82 @@ var losD = losDft + (losDin / 12);
 // List of all available optotype sizes and their corresponding ratio
 var optoRatios = [{
    index: 1,
-   display: 10,            // E.g. 20/10 vision
+   display: `${20 / 10} (20/10)`,            // E.g. 20/10 vision
    ratio: 0.5,             // Ratio when compared with 20/20 optotype
    letters: 5              // How many letters to display at this size
 }, {
    index: 2,
-   display: 15,
+   display: `${20 / 15} (20/15)`,
    ratio: 0.75,
    letters: 5
 }, {
    index: 3,
-   display: 20,
+   display: `${20 / 20} (20/20)`,
    ratio: 1.0,
    letters: 5
 }, {
    index: 4,
-   display: 25,
-   ratio: 1.25,
+   display: `0.9 (20/${Math.round(20 / 0.9 * 100) / 100})`,
+   ratio: 1 / 0.9,
    letters: 5
 }, {
    index: 5,
-   display: 30,
-   ratio: 1.5,
+   display: `${20 / 25} (20/25)`,
+   ratio: 1.25,
    letters: 5
 }, {
    index: 6,
-   display: 40,
-   ratio: 2.0,
+   display: `0.7 (20/${Math.round(20 / 0.7 * 100) / 100})`,
+   ratio: 1 / 0.7,
    letters: 5
 }, {
    index: 7,
-   display: 50,
-   ratio: 2.5,
+   display: `${Math.round(20 / 30 * 100) / 100} (20/30)`,
+   ratio: 1.5,
    letters: 5
 }, {
    index: 8,
-   display: 60,
-   ratio: 3.0,
+   display: `0.6 (20/${Math.round(20 / 0.6 * 100) / 100})`,
+   ratio: 1 / 0.6,
    letters: 5
 }, {
    index: 9,
-   display: 70,
-   ratio: 3.5,
+   display: `${20 / 40} (20/40)`,
+   ratio: 2.0,
    letters: 5
 }, {
    index: 10,
-   display: 80,
-   ratio: 4.0,
+   display: `${20 / 50} (20/50)`,
+   ratio: 2.5,
    letters: 5
 }, {
    index: 11,
-   display: 100,
+   display: `${Math.round(20 / 60 * 100) / 100} (20/60)`,
+   ratio: 3.0,
+   letters: 5
+}, {
+   index: 12,
+   display: `${Math.round(20 / 70 * 100) / 100} (20/70)`,
+   ratio: 3.5,
+   letters: 5
+}, {
+   index: 13,
+   display: `${20 / 80} (20/80)`,
+   ratio: 4.0,
+   letters: 5
+}, {
+   index: 14,
+   display: `${20 / 100} (20/100)`,
    ratio: 5.0,
    letters: 3
 }, {
-   index: 12,
-   display: 200,
+   index: 15,
+   display: `${20 / 200} (20/200)`,
    ratio: 10.0,
    letters: 2
 }, {
-   index: 13,
-   display: 400,
+   index: 16,
+   display: `${20 / 400} (20/400)`,
    ratio: 20.0,
    letters: 1
 }];
@@ -154,14 +169,14 @@ function optoType() {
       for (var i = 0; i < optoLength; i++) {
          let rnum = Math.floor(Math.random() * optoChars.length);
 
-         rnow = optoChars.substring(rnum,rnum+1);
+         rnow = optoChars.substring(rnum, rnum + 1);
 
          // Prevent two of the same letter appearing side by side
          if (rnow != rlast) {
 
             // Add a space between letters
             if (optoText.length > 0) {
-               optoText += ' ';
+               optoText += '     ';
             }
 
             rlast = rnow;
@@ -186,7 +201,7 @@ function optoType() {
 function f11Toggle() {
    'use strict';
 
-   if (((window.innerWidth/window.screen.width) >= 0.95) && ((window.innerHeight/window.screen.height) >= 0.95)) {
+   if (((window.innerWidth / window.screen.width) >= 0.95) && ((window.innerHeight / window.screen.height) >= 0.95)) {
       $('#goFullScreen').hide();
       fullScreen = true;
    } else {
@@ -201,10 +216,11 @@ function f11Toggle() {
 function changeSize(newIndex) {
    'use strict';
 
-   if ((newIndex <= 13) && (newIndex >= 1)) {
+   if ((newIndex <= 16) && (newIndex >= 1)) {
       let resizeObj = optoRatios.find(o => o.index == newIndex);
       $('#displayType').css('font-size', (((optoSize * resizeObj.ratio) / pxSize) * 2 * (losD / 20)));
-      $('#acuitySize').text(resizeObj.display);
+      $('#acuitySize').text(resizeObj.display + Math.round((optoSize * resizeObj.ratio) * (losD / 20) * 100) / 100 + 'mm, '
+         + Math.round(((optoSize * resizeObj.ratio) / pxSize) * 2 * (losD / 20) * 100) / 100 + 'px');
       $('#displayType').text(optoType());
    }
 }
@@ -228,7 +244,7 @@ $(function () {
    }
 
    // Full screen detection (and reaction)
-   $(window).resize(function() {
+   $(window).resize(function () {
       setTimeout(() => {
          f11Toggle();
          // Add additional functions here
@@ -236,19 +252,20 @@ $(function () {
    });
 
    // Do things when keys are pressed
-   $(document).keydown(function(e) {
+   $(document).keydown(function (e) {
+      console.log(e.keyCode)
 
       // Key press: ← or → (left or right)
       // Randomizes optotype.
-      if (e.keyCode == 37 || e.keyCode == 39) {
+      if (e.keyCode == 37 || e.keyCode == 39 || e.keyCode == 53) {
          $('#displayType').text(optoType());
       }
 
       // Key press: ↑ (up)
       // Increases size
-      if (e.keyCode == 38) {
+      if (e.keyCode == 38 || e.keyCode == 50) {
 
-         if (optoIndex < 13) {
+         if (optoIndex < 16) {
             optoIndex++;
             changeSize(optoIndex);
          }
@@ -257,7 +274,7 @@ $(function () {
 
       // Key press: ↓ (down)
       // Decreases size
-      if (e.keyCode == 40) {
+      if (e.keyCode == 40 || e.keyCode == 56) {
 
          if (optoIndex > 1) {
             optoIndex--;
@@ -317,7 +334,7 @@ $(function () {
    });
 
    // Reset cookies and configuration values to default
-   $('#qReset').click(function() {
+   $('#qReset').click(function () {
       // Reset values
       optoMirror = false;
       pxSize = 0.2740;
